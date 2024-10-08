@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import swal from 'sweetalert';
 import fileSaver from 'file-saver';
 
 function Password({ password, length, setlength, numbers, setNumbers, SetCharcter, passwordref, copytoclipboard }) {
   const [savepass, setSavedPassword] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768); // Determine if it's mobile view
 
   const clickevent = () => {
     copytoclipboard();
@@ -25,6 +26,15 @@ function Password({ password, length, setlength, numbers, setNumbers, SetCharcte
     setSavedPassword(e.target.value);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); // Update state on resize
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <>
       {/* Title */}
@@ -33,7 +43,7 @@ function Password({ password, length, setlength, numbers, setNumbers, SetCharcte
       </div>
 
       {/* Password Input and Controls */}
-      <div className="bg-light mx-auto p-4 rounded shadow-lg" style={{ width: '90%', maxWidth: '500px',height:"300px" }}>
+      <div className="bg-light mx-auto p-4 rounded shadow-lg" style={{ width: '90%', maxWidth: '500px', height: "300px" }}>
         <div className="d-flex">
           <input
             className="form-control form-control-lg w-75"
@@ -92,11 +102,11 @@ function Password({ password, length, setlength, numbers, setNumbers, SetCharcte
       {/* Save Input and Button */}
       <div className="d-flex flex-column flex-md-row justify-content-center align-items-center mt-5 w-100 px-2">
         <input
-          className="form-control w-100 mb-3 mb-md-0"
+          className="form-control w-80 mb-3 mb-md-0"
           value={savepass}
           onChange={userdegapath}
           placeholder="Enter file name to save"
-          style={{ maxWidth: '380px' }}
+          style={{ maxWidth: isMobile ? '360px' : '380px' }} // Decrease by 10px for mobile
         />
         <button
           className="btn btn-primary btn-md ms-md-2"
