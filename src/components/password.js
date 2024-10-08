@@ -1,90 +1,110 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import swal from 'sweetalert';
 import fileSaver from 'file-saver';
 
 function Password({ password, length, setlength, numbers, setNumbers, SetCharcter, passwordref, copytoclipboard }) {
-
-  // const [alert, setAlert] = useState(false);
   const [savepass, setSavedPassword] = useState('');
 
   const clickevent = () => {
     copytoclipboard();
-  
     swal("Copied!", "Password has been copied to clipboard.", "success");
   };
+
   const clickevent2 = () => {
-    if (savepass==="") {
-      swal("Error", "Empty hai ye chutiye", "error");
+    if (savepass === "") {
+      swal("Error", "Please enter a file name.", "error");
       return;
     }
 
-
     fileSaver.saveAs(new Blob([password]), savepass);
-    swal("Saved!", "Password has been Saved ", "success");
-    setSavedPassword("")
+    swal("Saved!", "Password has been saved.", "success");
+    setSavedPassword("");
   };
 
-
-  const userdegapath =(e) =>{
-    
-  
+  const userdegapath = (e) => {
     setSavedPassword(e.target.value);
   };
 
   return (
     <>
+      {/* Title */}
       <div className="d-flex justify-content-center mt-4 mb-4">
-        <h3>Password Generator</h3>
+        <h3 className="text-primary">Password Generator</h3>
       </div>
 
-      <div className="bg-dark w-50 mx-auto p-4">
-        <div >
+      {/* Password Input and Controls */}
+      <div className="bg-light mx-auto p-4 rounded shadow-lg" style={{ width: '90%', maxWidth: '500px',height:"300px" }}>
+        <div className="d-flex">
           <input
-            className="w-50 "
+            className="form-control form-control-lg w-75"
             type="text"
             readOnly
-            placeholder="password"
+            placeholder="Generated password"
             value={password}
             ref={passwordref}
-            style={{outline:'none'}}
+            style={{ outline: 'none' }}
           />
-          <button className="btn btn-outline-none btn-success btn-sm" onClick={clickevent} >copy</button>
+          <button
+            className="btn btn-success btn-lg ms-2"
+            onClick={clickevent}
+          >
+            Copy
+          </button>
         </div>
 
+        {/* Length Slider and Checkbox Options */}
         <div className="mt-4">
-          <input
-            type="range"
-            min={10}
-            max={100}
-            value={length}
-            onChange={(e) => setlength(e.target.value)}
-          />
-          <span className="text-orange mx-4 ">length  : {length}</span>
+          <div className="d-flex align-items-center">
+            <input
+              type="range"
+              className="form-range text-yellow-"
+              min={10}
+              max={100}
+              value={length}
+              onChange={(e) => setlength(e.target.value)}
+            />
+            <span className="ms-3 text-primary">Length: {length}</span>
+          </div>
 
-          <input
-            type="checkbox"
-            className="slider outline-none"
-            defaultChecked={numbers}
-            onChange={() => {
-              setNumbers((prev) => !prev);
-            }}
-          />
-          <span className="text-orange mx-3 ">Numbers</span>
+          <div className="form-check mt-3">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="numbersCheck"
+              checked={numbers}
+              onChange={() => setNumbers((prev) => !prev)}
+            />
+            <label className="form-check-label ms-2 text-primary" htmlFor="numbersCheck">Include Numbers</label>
+          </div>
 
-
-
-          <input
-            type="checkbox"
-            className="slider outline-none"
-            onChange={() => SetCharcter((prev) => !prev)}
-          />
-          <span className="text-orange mx-3 ">Character</span>
+          <div className="form-check mt-3">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="charCheck"
+              onChange={() => SetCharcter((prev) => !prev)}
+            />
+            <label className="form-check-label ms-2 text-primary" htmlFor="charCheck">Include Characters</label>
+          </div>
         </div>
       </div>
 
-      <div className="container d-flex justify-content-center align-items-center">
-        <input className="bg-white my-5 "value={savepass} onChange={userdegapath} style={{ height: '4vh', width: '20vw', outline:'none'}}  placeholder="enter file name to save in notepad"/>
-        <button className="btn btn-success btn-sm" onClick={clickevent2}>Save</button>
+      {/* Save Input and Button */}
+      <div className="d-flex flex-column flex-md-row justify-content-center align-items-center mt-5 w-100 px-2">
+        <input
+          className="form-control w-100 mb-3 mb-md-0"
+          value={savepass}
+          onChange={userdegapath}
+          placeholder="Enter file name to save"
+          style={{ maxWidth: '380px' }}
+        />
+        <button
+          className="btn btn-primary btn-md ms-md-2"
+          onClick={clickevent2}
+          style={{ width: '100%', maxWidth: '100px' }}
+        >
+          Save
+        </button>
       </div>
     </>
   );
