@@ -51,9 +51,9 @@ passwordgenrator()
         setNumbers={Setnumbers}
         SetCharcter={SetCharcter}
         length={length}
-
        copytoclipboard = {copytoclipboard}
         passwordref = {passwordref}
-      />    </div>
+      />   
+      </div>
   )
 }
